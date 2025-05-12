@@ -1,0 +1,49 @@
+id,nombre,numero,posicion,equipo,altura,edad,goles,asistencias,partidos_jugados,tarjetas_amarillas,tarjetas_rojas,estado,eliminado
+1,string,0,string,string,0.0,0,0,0,0,0,0,activo,sí
+2,Andrés Llinás,26,Defensa,Millonarios,1.87,28,2,1,35,5,0,activo,no
+3,Juan Pablo Vargas,6,Defensa,Millonarios,1.92,30,1,0,38,4,0,activo,no
+4,Daniel Ruiz,18,Volante,Millonarios,1.71,24,4,8,46,3,0,activo,no
+5,Santiago Giordana,32,Delantero,Millonarios,1.78,30,5,1,43,6,1,activo,no
+6,Nicolás Arévalo,28,Volante,Millonarios,1.75,22,0,2,10,1,0,activo,no
+7,Diego Novoa,12,Arquero,Millonarios,1.9,35,0,0,15,1,0,activo,no
+8,Iván Arboleda,1,Arquero,Millonarios,1.91,29,0,0,10,0,0,activo,no
+9,Jhonatan González,13,Arquero,Millonarios,1.89,26,0,0,5,0,0,activo,no
+10,Jorge Arias,17,Defensa,Millonarios,1.85,32,0,1,30,3,0,activo,no
+11,Alex Moreno Paz,4,Defensa,Millonarios,1.88,27,1,0,25,4,0,activo,no
+12,Delvin Alfonzo,22,Defensa,Millonarios,1.8,24,0,2,20,2,0,activo,no
+13,Johan Hernández,23,Defensa,Millonarios,1.82,23,0,1,15,3,0,activo,no
+14,Ricardo Rosales,24,Defensa,Millonarios,1.81,25,0,0,12,2,0,activo,no
+15,Sander Navarro,16,Defensa,Millonarios,1.83,21,0,0,8,1,0,activo,no
+16,Sergio Mosquera,5,Defensa,Millonarios,1.86,31,1,0,28,5,0,activo,no
+17,Danovis Banguero,20,Defensa,Millonarios,1.84,35,0,2,22,3,0,activo,no
+18,Ómar Bertel,3,Defensa,Millonarios,1.8,28,0,1,18,2,0,inactivo,sí
+19,Samuel Asprilla,2,Defensa,Millonarios,1.82,24,0,0,10,1,0,inactivo,no
+20,Óscar Vanegas,29,Defensa,Millonarios,1.87,28,1,0,15,3,0,inactivo,sí
+21,Daniel Giraldo,8,Volante,Millonarios,1.78,32,1,3,40,6,1,inactivo,no
+22,Stiven Vega,25,Volante,Millonarios,1.77,27,0,2,35,4,0,activo,no
+23,Juan Carlos Pereira,21,Volante,Millonarios,1.76,31,2,4,38,5,0,activo,sí
+24,Daniel Cataño,10,Volante,Millonarios,1.74,33,3,5,30,3,0,activo,no
+25,David Mackalister Silva,14,Volante,Millonarios,1.75,36,2,6,45,4,0,activo,no
+26,Félix Charrupí,27,Volante,Millonarios,1.73,23,1,1,12,2,0,activo,no
+27,Jhon Edinson Largacha,30,Volante,Millonarios,1.72,20,0,1,5,1,0,activo,no
+28,Jovani Welch,15,Volante,Millonarios,1.8,25,0,0,3,0,0,activo,no
+29,Juan José Ramírez,19,Volante,Millonarios,1.76,22,0,1,8,1,0,inactivo,no
+30,Larry Vásquez,5,Volante,Millonarios,1.79,33,1,2,40,5,0,inactivo,no
+31,Emerson Rodríguez,7,Volante,Millonarios,1.74,24,1,2,10,2,0,inactivo,sí
+32,Óscar Cortés,9,Volante,Millonarios,1.75,21,2,3,15,2,0,inactivo,sí
+33,Juan Camilo García,11,Volante,Millonarios,1.78,23,0,1,10,1,0,inactivo,sí
+34,Jorge Rengifo,12,Volante,Millonarios,1.77,22,1,1,8,1,0,inactivo,sí
+35,Carlos Gómez,15,Volante,Millonarios,1.76,24,2,2,12,2,0,inactivo,sí
+36,José Cuenú,16,Volante,Millonarios,1.8,25,0,0,5,1,0,inactivo,sí
+37,Leonardo Castro,23,Delantero,Millonarios,1.79,32,6,2,40,3,0,activo,no
+38,Beckham Castro,11,Delantero,Millonarios,1.77,21,2,3,17,2,0,activo,no
+39,Kevin Cortés,8,Delantero,Millonarios,1.76,22,1,1,14,1,0,activo,no
+40,Luis Paredes,9,Delantero,Millonarios,1.78,23,1,2,14,2,0,activo,no
+41,Diego Herazo,19,Delantero,Millonarios,1.8,28,2,1,15,3,0,inactivo,sí
+42,Jáder Valencia,24,Delantero,Millonarios,1.79,25,1,1,10,1,0,activo,no
+43,Ramiro Brochero,26,Delantero,Millonarios,1.78,24,1,1,10,2,0,inactivo,sí
+44,Dewar Victoria,27,Delantero,Millonarios,1.77,23,0,1,8,1,0,inactivo,sí
+45,Radamel Falcao García,9,Delantero,Millonarios,1.77,39,6,2,21,1,0,activo,no
+46,string,0,string,string,0.0,0,0,0,0,0,0,activo,sí
+47,Andres,80,Def,Mil,1.7,20,10,10,10,0,0,activo,no
+48,David,80,Def,Mil,1.7,20,10,10,10,0,0,activo,sí

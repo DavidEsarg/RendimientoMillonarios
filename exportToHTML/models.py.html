@@ -1,0 +1,64 @@
+<html>
+<head>
+<title>models.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+models.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">pydantic </span><span class="s0">import </span><span class="s1">BaseModel</span>
+
+<span class="s0">class </span><span class="s1">Jugador</span><span class="s2">(</span><span class="s1">BaseModel</span><span class="s2">):</span>
+    <span class="s1">id</span><span class="s2">:</span><span class="s1">int</span>
+    <span class="s1">nombre</span><span class="s2">: </span><span class="s1">str</span>
+    <span class="s1">numero</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">posicion</span><span class="s2">: </span><span class="s1">str</span>
+    <span class="s1">equipo</span><span class="s2">: </span><span class="s1">str</span>
+    <span class="s1">altura</span><span class="s2">: </span><span class="s1">float</span>
+    <span class="s1">edad</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">goles</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">asistencias</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">partidos_jugados</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">tarjetas_amarillas</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">tarjetas_rojas</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">estado</span><span class="s2">: </span><span class="s1">str </span><span class="s2">= </span><span class="s3">&quot;activo&quot;</span>
+    <span class="s1">eliminado</span><span class="s2">: </span><span class="s1">str </span><span class="s2">= </span><span class="s3">&quot;no&quot;</span>
+
+<span class="s0">class </span><span class="s1">JugadorConId</span><span class="s2">(</span><span class="s1">Jugador</span><span class="s2">):</span>
+    <span class="s1">id</span><span class="s2">: </span><span class="s1">int</span>
+
+<span class="s0">class </span><span class="s1">Partido</span><span class="s2">(</span><span class="s1">BaseModel</span><span class="s2">):</span>
+    <span class="s1">fecha</span><span class="s2">: </span><span class="s1">str</span>
+    <span class="s1">torneo</span><span class="s2">: </span><span class="s1">str</span>
+    <span class="s1">rival</span><span class="s2">: </span><span class="s1">str</span>
+    <span class="s1">goles_millonarios</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">goles_rival</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">jugador_destacado</span><span class="s2">: </span><span class="s1">str</span>
+    <span class="s1">goles</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">asistencias</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">tarjetas_amarillas</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">tarjetas_rojas</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">posesion</span><span class="s2">: </span><span class="s1">float</span>
+    <span class="s1">estado</span><span class="s2">: </span><span class="s1">str </span><span class="s2">= </span><span class="s3">&quot;jugado&quot;</span>
+    <span class="s1">eliminado</span><span class="s2">: </span><span class="s1">str </span><span class="s2">= </span><span class="s3">&quot;no&quot;</span>
+
+<span class="s0">class </span><span class="s1">PartidoConId</span><span class="s2">(</span><span class="s1">Partido</span><span class="s2">):</span>
+    <span class="s1">id_partido</span><span class="s2">: </span><span class="s1">int</span>
+
+<span class="s0">class </span><span class="s1">TorneoStats</span><span class="s2">(</span><span class="s1">BaseModel</span><span class="s2">):</span>
+    <span class="s1">torneo</span><span class="s2">: </span><span class="s1">str</span>
+    <span class="s1">ganados</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">perdidos</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">empatados</span><span class="s2">: </span><span class="s1">int</span>
+    <span class="s1">total_partidos</span><span class="s2">: </span><span class="s1">int</span></pre>
+</body>
+</html>

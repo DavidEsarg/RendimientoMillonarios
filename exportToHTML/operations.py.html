@@ -1,0 +1,122 @@
+<html>
+<head>
+<title>operations.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+operations.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">csv</span>
+<span class="s0">from </span><span class="s1">typing </span><span class="s0">import </span><span class="s1">List</span>
+<span class="s0">from </span><span class="s1">models </span><span class="s0">import </span><span class="s1">JugadorConId</span><span class="s2">, </span><span class="s1">PartidoConId</span>
+
+<span class="s0">def </span><span class="s1">leer_todos_los_jugadores</span><span class="s2">() </span><span class="s1">-&gt; List</span><span class="s2">[</span><span class="s1">JugadorConId</span><span class="s2">]:</span>
+    <span class="s1">jugadores </span><span class="s2">= []</span>
+    <span class="s0">try</span><span class="s2">:</span>
+        <span class="s0">with </span><span class="s1">open</span><span class="s2">(</span><span class="s3">&quot;players.csv&quot;</span><span class="s2">, </span><span class="s1">newline</span><span class="s2">=</span><span class="s3">&quot;&quot;</span><span class="s2">, </span><span class="s1">encoding</span><span class="s2">=</span><span class="s3">&quot;utf-8&quot;</span><span class="s2">) </span><span class="s0">as </span><span class="s1">csvfile</span><span class="s2">:</span>
+            <span class="s1">reader </span><span class="s2">= </span><span class="s1">csv</span><span class="s2">.</span><span class="s1">DictReader</span><span class="s2">(</span><span class="s1">csvfile</span><span class="s2">)</span>
+            <span class="s0">for </span><span class="s1">row </span><span class="s0">in </span><span class="s1">reader</span><span class="s2">:</span>
+                <span class="s0">try</span><span class="s2">:</span>
+                    <span class="s1">jugador </span><span class="s2">= </span><span class="s1">JugadorConId</span><span class="s2">(**</span><span class="s1">row</span><span class="s2">)</span>
+                    <span class="s1">jugador</span><span class="s2">.</span><span class="s1">id </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;id&quot;</span><span class="s2">])</span>
+                    <span class="s1">jugador</span><span class="s2">.</span><span class="s1">numero </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;numero&quot;</span><span class="s2">])</span>
+                    <span class="s1">jugador</span><span class="s2">.</span><span class="s1">altura </span><span class="s2">= </span><span class="s1">float</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;altura&quot;</span><span class="s2">])</span>
+                    <span class="s1">jugador</span><span class="s2">.</span><span class="s1">edad </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;edad&quot;</span><span class="s2">])</span>
+                    <span class="s1">jugador</span><span class="s2">.</span><span class="s1">goles </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;goles&quot;</span><span class="s2">])</span>
+                    <span class="s1">jugador</span><span class="s2">.</span><span class="s1">asistencias </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;asistencias&quot;</span><span class="s2">])</span>
+                    <span class="s1">jugador</span><span class="s2">.</span><span class="s1">partidos_jugados </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;partidos_jugados&quot;</span><span class="s2">])</span>
+                    <span class="s1">jugador</span><span class="s2">.</span><span class="s1">tarjetas_amarillas </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;tarjetas_amarillas&quot;</span><span class="s2">])</span>
+                    <span class="s1">jugador</span><span class="s2">.</span><span class="s1">tarjetas_rojas </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;tarjetas_rojas&quot;</span><span class="s2">])</span>
+                    <span class="s1">jugadores</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s1">jugador</span><span class="s2">)</span>
+                <span class="s0">except </span><span class="s2">(</span><span class="s1">ValueError</span><span class="s2">, </span><span class="s1">KeyError</span><span class="s2">) </span><span class="s0">as </span><span class="s1">e</span><span class="s2">:</span>
+                    <span class="s1">print</span><span class="s2">(</span><span class="s3">f&quot;Error al procesar fila en players.csv: </span><span class="s0">{</span><span class="s1">row</span><span class="s0">}</span><span class="s3">. Error: </span><span class="s0">{</span><span class="s1">str</span><span class="s2">(</span><span class="s1">e</span><span class="s2">)</span><span class="s0">}</span><span class="s3">&quot;</span><span class="s2">)</span>
+                    <span class="s0">continue</span>
+    <span class="s0">except </span><span class="s1">FileNotFoundError</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Archivo players.csv no encontrado. Devolviendo lista vacía.&quot;</span><span class="s2">)</span>
+    <span class="s0">except </span><span class="s1">PermissionError</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Error de permisos al leer players.csv. Asegúrate de que el archivo no esté bloqueado.&quot;</span><span class="s2">)</span>
+        <span class="s0">raise</span>
+    <span class="s0">except </span><span class="s1">Exception </span><span class="s0">as </span><span class="s1">e</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">f&quot;Error inesperado al leer players.csv: </span><span class="s0">{</span><span class="s1">str</span><span class="s2">(</span><span class="s1">e</span><span class="s2">)</span><span class="s0">}</span><span class="s3">&quot;</span><span class="s2">)</span>
+        <span class="s0">raise</span>
+    <span class="s0">return </span><span class="s1">jugadores</span>
+
+<span class="s0">def </span><span class="s1">escribir_jugadores</span><span class="s2">(</span><span class="s1">jugadores</span><span class="s2">: </span><span class="s1">List</span><span class="s2">[</span><span class="s1">JugadorConId</span><span class="s2">]):</span>
+    <span class="s0">try</span><span class="s2">:</span>
+        <span class="s0">with </span><span class="s1">open</span><span class="s2">(</span><span class="s3">&quot;players.csv&quot;</span><span class="s2">, </span><span class="s3">&quot;w&quot;</span><span class="s2">, </span><span class="s1">newline</span><span class="s2">=</span><span class="s3">&quot;&quot;</span><span class="s2">, </span><span class="s1">encoding</span><span class="s2">=</span><span class="s3">&quot;utf-8&quot;</span><span class="s2">) </span><span class="s0">as </span><span class="s1">csvfile</span><span class="s2">:</span>
+            <span class="s1">fieldnames </span><span class="s2">= [</span>
+                <span class="s3">&quot;id&quot;</span><span class="s2">, </span><span class="s3">&quot;nombre&quot;</span><span class="s2">, </span><span class="s3">&quot;numero&quot;</span><span class="s2">, </span><span class="s3">&quot;posicion&quot;</span><span class="s2">, </span><span class="s3">&quot;equipo&quot;</span><span class="s2">, </span><span class="s3">&quot;altura&quot;</span><span class="s2">, </span><span class="s3">&quot;edad&quot;</span><span class="s2">,</span>
+                <span class="s3">&quot;goles&quot;</span><span class="s2">, </span><span class="s3">&quot;asistencias&quot;</span><span class="s2">, </span><span class="s3">&quot;partidos_jugados&quot;</span><span class="s2">, </span><span class="s3">&quot;tarjetas_amarillas&quot;</span><span class="s2">,</span>
+                <span class="s3">&quot;tarjetas_rojas&quot;</span><span class="s2">, </span><span class="s3">&quot;estado&quot;</span><span class="s2">, </span><span class="s3">&quot;eliminado&quot;</span>
+            <span class="s2">]</span>
+            <span class="s1">writer </span><span class="s2">= </span><span class="s1">csv</span><span class="s2">.</span><span class="s1">DictWriter</span><span class="s2">(</span><span class="s1">csvfile</span><span class="s2">, </span><span class="s1">fieldnames</span><span class="s2">=</span><span class="s1">fieldnames</span><span class="s2">)</span>
+            <span class="s1">writer</span><span class="s2">.</span><span class="s1">writeheader</span><span class="s2">()</span>
+            <span class="s0">for </span><span class="s1">jugador </span><span class="s0">in </span><span class="s1">jugadores</span><span class="s2">:</span>
+                <span class="s1">writer</span><span class="s2">.</span><span class="s1">writerow</span><span class="s2">(</span><span class="s1">jugador</span><span class="s2">.</span><span class="s1">dict</span><span class="s2">())</span>
+    <span class="s0">except </span><span class="s1">PermissionError</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Error de permisos al escribir en players.csv. Asegúrate de que el archivo no esté bloqueado.&quot;</span><span class="s2">)</span>
+        <span class="s0">raise</span>
+    <span class="s0">except </span><span class="s1">Exception </span><span class="s0">as </span><span class="s1">e</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">f&quot;Error inesperado al escribir en players.csv: </span><span class="s0">{</span><span class="s1">str</span><span class="s2">(</span><span class="s1">e</span><span class="s2">)</span><span class="s0">}</span><span class="s3">&quot;</span><span class="s2">)</span>
+        <span class="s0">raise</span>
+
+<span class="s0">def </span><span class="s1">leer_todos_los_partidos</span><span class="s2">() </span><span class="s1">-&gt; List</span><span class="s2">[</span><span class="s1">PartidoConId</span><span class="s2">]:</span>
+    <span class="s1">partidos </span><span class="s2">= []</span>
+    <span class="s0">try</span><span class="s2">:</span>
+        <span class="s0">with </span><span class="s1">open</span><span class="s2">(</span><span class="s3">&quot;games.csv&quot;</span><span class="s2">, </span><span class="s1">newline</span><span class="s2">=</span><span class="s3">&quot;&quot;</span><span class="s2">, </span><span class="s1">encoding</span><span class="s2">=</span><span class="s3">&quot;utf-8&quot;</span><span class="s2">) </span><span class="s0">as </span><span class="s1">csvfile</span><span class="s2">:</span>
+            <span class="s1">reader </span><span class="s2">= </span><span class="s1">csv</span><span class="s2">.</span><span class="s1">DictReader</span><span class="s2">(</span><span class="s1">csvfile</span><span class="s2">)</span>
+            <span class="s0">for </span><span class="s1">row </span><span class="s0">in </span><span class="s1">reader</span><span class="s2">:</span>
+                <span class="s0">try</span><span class="s2">:</span>
+                    <span class="s1">partido </span><span class="s2">= </span><span class="s1">PartidoConId</span><span class="s2">(**</span><span class="s1">row</span><span class="s2">)</span>
+                    <span class="s1">partido</span><span class="s2">.</span><span class="s1">id_partido </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;id_partido&quot;</span><span class="s2">])</span>
+                    <span class="s1">partido</span><span class="s2">.</span><span class="s1">goles_millonarios </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;goles_millonarios&quot;</span><span class="s2">])</span>
+                    <span class="s1">partido</span><span class="s2">.</span><span class="s1">goles_rival </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;goles_rival&quot;</span><span class="s2">])</span>
+                    <span class="s1">partido</span><span class="s2">.</span><span class="s1">goles </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;goles&quot;</span><span class="s2">])</span>
+                    <span class="s1">partido</span><span class="s2">.</span><span class="s1">asistencias </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;asistencias&quot;</span><span class="s2">])</span>
+                    <span class="s1">partido</span><span class="s2">.</span><span class="s1">tarjetas_amarillas </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;tarjetas_amarillas&quot;</span><span class="s2">])</span>
+                    <span class="s1">partido</span><span class="s2">.</span><span class="s1">tarjetas_rojas </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;tarjetas_rojas&quot;</span><span class="s2">])</span>
+                    <span class="s1">partido</span><span class="s2">.</span><span class="s1">posesion </span><span class="s2">= </span><span class="s1">float</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s3">&quot;posesion&quot;</span><span class="s2">])</span>
+                    <span class="s1">partidos</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s1">partido</span><span class="s2">)</span>
+                <span class="s0">except </span><span class="s2">(</span><span class="s1">ValueError</span><span class="s2">, </span><span class="s1">KeyError</span><span class="s2">) </span><span class="s0">as </span><span class="s1">e</span><span class="s2">:</span>
+                    <span class="s1">print</span><span class="s2">(</span><span class="s3">f&quot;Error al procesar fila en games.csv: </span><span class="s0">{</span><span class="s1">row</span><span class="s0">}</span><span class="s3">. Error: </span><span class="s0">{</span><span class="s1">str</span><span class="s2">(</span><span class="s1">e</span><span class="s2">)</span><span class="s0">}</span><span class="s3">&quot;</span><span class="s2">)</span>
+                    <span class="s0">continue</span>
+    <span class="s0">except </span><span class="s1">FileNotFoundError</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Archivo games.csv no encontrado. Devolviendo lista vacía.&quot;</span><span class="s2">)</span>
+    <span class="s0">except </span><span class="s1">PermissionError</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Error de permisos al leer games.csv. Asegúrate de que el archivo no esté bloqueado.&quot;</span><span class="s2">)</span>
+        <span class="s0">raise</span>
+    <span class="s0">except </span><span class="s1">Exception </span><span class="s0">as </span><span class="s1">e</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">f&quot;Error inesperado al leer games.csv: </span><span class="s0">{</span><span class="s1">str</span><span class="s2">(</span><span class="s1">e</span><span class="s2">)</span><span class="s0">}</span><span class="s3">&quot;</span><span class="s2">)</span>
+        <span class="s0">raise</span>
+    <span class="s0">return </span><span class="s1">partidos</span>
+
+<span class="s0">def </span><span class="s1">escribir_partidos</span><span class="s2">(</span><span class="s1">partidos</span><span class="s2">: </span><span class="s1">List</span><span class="s2">[</span><span class="s1">PartidoConId</span><span class="s2">]):</span>
+    <span class="s0">try</span><span class="s2">:</span>
+        <span class="s0">with </span><span class="s1">open</span><span class="s2">(</span><span class="s3">&quot;games.csv&quot;</span><span class="s2">, </span><span class="s3">&quot;w&quot;</span><span class="s2">, </span><span class="s1">newline</span><span class="s2">=</span><span class="s3">&quot;&quot;</span><span class="s2">, </span><span class="s1">encoding</span><span class="s2">=</span><span class="s3">&quot;utf-8&quot;</span><span class="s2">) </span><span class="s0">as </span><span class="s1">csvfile</span><span class="s2">:</span>
+            <span class="s1">fieldnames </span><span class="s2">= [</span>
+                <span class="s3">&quot;id_partido&quot;</span><span class="s2">, </span><span class="s3">&quot;fecha&quot;</span><span class="s2">, </span><span class="s3">&quot;torneo&quot;</span><span class="s2">, </span><span class="s3">&quot;rival&quot;</span><span class="s2">, </span><span class="s3">&quot;goles_millonarios&quot;</span><span class="s2">,</span>
+                <span class="s3">&quot;goles_rival&quot;</span><span class="s2">, </span><span class="s3">&quot;jugador_destacado&quot;</span><span class="s2">, </span><span class="s3">&quot;goles&quot;</span><span class="s2">, </span><span class="s3">&quot;asistencias&quot;</span><span class="s2">,</span>
+                <span class="s3">&quot;tarjetas_amarillas&quot;</span><span class="s2">, </span><span class="s3">&quot;tarjetas_rojas&quot;</span><span class="s2">, </span><span class="s3">&quot;posesion&quot;</span><span class="s2">, </span><span class="s3">&quot;estado&quot;</span><span class="s2">,</span>
+                <span class="s3">&quot;eliminado&quot;</span>
+            <span class="s2">]</span>
+            <span class="s1">writer </span><span class="s2">= </span><span class="s1">csv</span><span class="s2">.</span><span class="s1">DictWriter</span><span class="s2">(</span><span class="s1">csvfile</span><span class="s2">, </span><span class="s1">fieldnames</span><span class="s2">=</span><span class="s1">fieldnames</span><span class="s2">)</span>
+            <span class="s1">writer</span><span class="s2">.</span><span class="s1">writeheader</span><span class="s2">()</span>
+            <span class="s0">for </span><span class="s1">partido </span><span class="s0">in </span><span class="s1">partidos</span><span class="s2">:</span>
+                <span class="s1">writer</span><span class="s2">.</span><span class="s1">writerow</span><span class="s2">(</span><span class="s1">partido</span><span class="s2">.</span><span class="s1">dict</span><span class="s2">())</span>
+    <span class="s0">except </span><span class="s1">PermissionError</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Error de permisos al escribir en games.csv. Asegúrate de que el archivo no esté bloqueado.&quot;</span><span class="s2">)</span>
+        <span class="s0">raise</span>
+    <span class="s0">except </span><span class="s1">Exception </span><span class="s0">as </span><span class="s1">e</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">f&quot;Error inesperado al escribir en games.csv: </span><span class="s0">{</span><span class="s1">str</span><span class="s2">(</span><span class="s1">e</span><span class="s2">)</span><span class="s0">}</span><span class="s3">&quot;</span><span class="s2">)</span>
+        <span class="s0">raise</span></pre>
+</body>
+</html>

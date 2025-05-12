@@ -1,0 +1,59 @@
+id_partido,fecha,torneo,rival,goles_millonarios,goles_rival,jugador_destacado,goles,asistencias,tarjetas_amarillas,tarjetas_rojas,posesion,estado,eliminado
+1,2024-01-18,Superliga,Junior,1,0,Álvaro Montero,1,0,2,0,55.0,jugado,no
+2,2024-01-25,Torneo Apertura,Unión Magdalena,2,1,Leonardo Castro,2,0,1,0,58.0,jugado,no
+3,2024-02-01,Torneo Apertura,Pasto,1,1,Daniel Ruiz,1,1,2,0,54.0,jugado,no
+4,2024-02-08,Torneo Apertura,Equidad,0,1,Andrés Llinás,0,0,3,0,52.0,jugado,no
+5,2024-02-15,Torneo Apertura,Llaneros,2,0,Santiago Giordana,2,0,1,0,60.0,jugado,no
+6,2024-02-22,Torneo Apertura,Medellín,1,2,Daniel Cataño,1,0,2,1,53.0,jugado,no
+7,2024-03-01,Torneo Apertura,Cali,1,0,Leonardo Castro,1,0,2,0,57.0,jugado,no
+8,2024-03-08,Torneo Apertura,Tolima,0,2,Álvaro Montero,0,0,3,0,50.0,jugado,no
+9,2024-03-15,Torneo Apertura,Junior,1,1,Daniel Ruiz,1,1,2,0,55.0,jugado,no
+10,2024-03-22,Torneo Apertura,Águilas,2,1,Santiago Giordana,2,0,1,0,58.0,jugado,no
+11,2024-03-29,Torneo Apertura,Santa Fe,1,2,Andrés Llinás,1,0,2,0,53.0,jugado,no
+12,2024-04-05,Torneo Apertura,Alianza,2,0,Leonardo Castro,2,0,1,0,59.0,jugado,no
+13,2024-04-12,Torneo Apertura,Fortaleza,1,1,Daniel Cataño,1,0,2,0,54.0,jugado,no
+14,2024-04-15,Torneo Apertura,Deportivo Pereira,2,2,Daniel Ruiz,2,1,3,0,60.0,jugado,no
+15,2024-04-22,Torneo Apertura,Nacional,0,1,Álvaro Montero,0,0,2,0,52.0,jugado,no
+16,2024-04-29,Torneo Apertura,América,1,2,Santiago Giordana,1,0,2,1,53.0,jugado,no
+17,2024-05-02,Torneo Apertura,Santa Fe,1,1,Andrés Llinás,1,0,1,0,52.0,jugado,sí
+18,2024-05-09,Torneo Apertura,Pereira,2,1,Leonardo Castro,2,0,2,0,57.0,jugado,no
+19,2024-05-16,Torneo Apertura,Bucaramanga,0,1,Álvaro Montero,0,0,3,0,51.0,jugado,no
+20,2024-05-23,Torneo Apertura,Once Caldas,1,0,Daniel Ruiz,1,0,2,0,56.0,jugado,no
+21,2024-06-10,Copa Colombia,Once Caldas,3,1,Santiago Giordana,3,0,2,0,58.0,jugado,no
+22,2024-07-15,Torneo Finalización,Unión Magdalena,1,1,Leonardo Castro,1,0,2,0,55.0,jugado,no
+23,2024-07-22,Torneo Finalización,Pasto,2,0,Daniel Ruiz,1,1,1,0,58.0,jugado,no
+24,2024-07-29,Torneo Finalización,Equidad,1,2,Andrés Llinás,1,0,2,0,53.0,jugado,no
+25,2024-08-05,Torneo Finalización,Llaneros,2,1,Santiago Giordana,2,0,1,0,57.0,jugado,no
+26,2024-08-12,Torneo Finalización,Medellín,0,1,Álvaro Montero,0,0,3,0,52.0,jugado,no
+27,2024-08-19,Torneo Finalización,Cali,1,1,Daniel Cataño,1,0,2,0,54.0,jugado,no
+28,2024-08-26,Torneo Finalización,Tolima,2,2,Leonardo Castro,2,0,2,1,56.0,jugado,no
+29,2024-09-02,Torneo Finalización,Junior,1,0,Daniel Ruiz,1,0,1,0,55.0,jugado,no
+30,string,string,string,0,0,string,0,0,0,0,0.0,jugado,sí
+31,2024-09-16,Torneo Finalización,Santa Fe,0,2,Andrés Llinás,0,0,3,0,52.0,jugado,no
+32,2024-09-23,Torneo Finalización,Alianza,1,1,Leonardo Castro,1,0,2,0,54.0,jugado,no
+33,2024-09-30,Torneo Finalización,Fortaleza,2,0,Daniel Ruiz,1,1,1,0,57.0,jugado,no
+34,2024-10-07,Torneo Finalización,Nacional,1,2,Santiago Giordana,1,0,2,0,53.0,jugado,no
+35,2024-10-14,Torneo Finalización,América,0,1,Álvaro Montero,0,0,3,0,51.0,jugado,no
+36,2024-10-21,Torneo Finalización,Pereira,2,1,Leonardo Castro,2,0,1,0,56.0,jugado,no
+37,2024-10-28,Torneo Finalización,Bucaramanga,1,1,Daniel Cataño,1,0,2,0,54.0,jugado,no
+38,2024-11-04,Torneo Finalización,Santa Fe,1,2,Andrés Llinás,1,0,2,1,53.0,jugado,no
+39,2024-11-11,Torneo Finalización,Once Caldas,2,0,Daniel Ruiz,1,1,1,0,58.0,jugado,no
+40,2024-11-18,Torneo Finalización,Envigado,1,0,Santiago Giordana,1,0,2,0,55.0,jugado,no
+41,2025-01-20,Torneo Apertura,Unión Magdalena,2,1,Leonardo Castro,2,0,1,0,57.0,jugado,no
+42,2025-01-27,Torneo Apertura,Pasto,1,0,Daniel Ruiz,1,0,2,0,55.0,jugado,no
+43,2025-02-03,Torneo Apertura,Equidad,1,1,Andrés Llinás,1,0,2,0,53.0,jugado,no
+44,2025-02-10,Torneo Apertura,Llaneros,2,0,Santiago Giordana,2,0,1,0,58.0,jugado,no
+45,2025-02-16,Torneo Apertura,Medellín,1,2,Daniel Cataño,1,0,2,0,54.0,jugado,no
+46,2025-02-23,Torneo Apertura,Cali,2,1,Leonardo Castro,2,0,1,0,56.0,jugado,no
+47,2025-03-02,Torneo Apertura,Tolima,1,1,Daniel Ruiz,1,1,2,0,55.0,jugado,no
+48,2025-03-04,Copa Sudamericana,Once Caldas,1,2,Santiago Giordana,1,0,2,1,53.0,jugado,sí
+49,2025-03-09,Torneo Apertura,Junior,2,0,Leonardo Castro,2,0,1,0,57.0,jugado,no
+50,2025-03-16,Torneo Apertura,Águilas,1,0,Daniel Ruiz,1,0,2,0,55.0,jugado,no
+51,2025-03-27,Torneo Apertura,Santa Fe,2,0,Leonardo Castro,2,0,1,0,58.0,jugado,no
+52,2025-04-03,Torneo Apertura,Alianza,1,1,Daniel Ruiz,1,1,2,0,54.0,jugado,no
+53,2025-04-06,Torneo Apertura,Fortaleza,2,0,Santiago Giordana,2,0,1,0,57.0,jugado,no
+54,2025-04-13,Torneo Apertura,Nacional,0,0,Álvaro Montero,0,0,2,0,52.0,jugado,no
+55,2025-04-15,Torneo Apertura,Equidad,0,0,Andrés Llinás,0,0,2,0,53.0,jugado,no
+56,2025-04-20,Torneo Apertura,América,0,0,Leonardo Castro,0,0,2,0,54.0,jugado,no
+57,2024-07-22,Torneo Finalización,Medellin,3,1,Leonardo Castro,2,1,1,0,65.0,jugado,sí
+58,2024-07-24,Torneo Finalizacion,Santa Fe,2,2,Leonardo Castr,1,1,0,0,68.0,jugado,sí
