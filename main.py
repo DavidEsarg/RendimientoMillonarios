@@ -1,14 +1,56 @@
+import csv
 from fastapi import FastAPI, Depends, HTTPException
 from typing import List
-from models import JugadorConId, PartidoConId
-from database import get_db, Base, engine
-from operations import leer_todos_los_jugadores, eliminar_jugador, leer_todos_los_partidos, eliminar_partido, leer_jugadores_eliminados, leer_partidos_eliminados
 from sqlalchemy.orm import Session
+from models import JugadorConId, PartidoConId
+from database import get_db, Base, engine, SessionLocal
+from operations import leer_todos_los_jugadores, eliminar_jugador, leer_todos_los_partidos, eliminar_partido, leer_jugadores_eliminados, leer_partidos_eliminados
+from db_models import Player, Game
+
+app = FastAPI()
 
 # Crear las tablas al iniciar
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+# Cargar datos iniciales de los archivos CSV al iniciar la aplicación
+def cargar_datos_iniciales():
+    db = SessionLocal()
+    try:
+        # Verificar si ya hay datos en las tablas
+        if db.query(Player).count() == 0:  # Si la tabla de jugadores está vacía
+            with open("players.csv", newline="", encoding="utf-8") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    try:
+                        jugador = JugadorConId(**row)
+                        db_jugador = Player(**jugador.dict())
+                        db.add(db_jugador)
+                    except Exception as e:
+                        print(f"Error al cargar jugador: {row}. Error: {str(e)}")
+                        continue
+
+        if db.query(Game).count() == 0:  # Si la tabla de partidos está vacía
+            with open("games.csv", newline="", encoding="utf-8") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    try:
+                        partido = PartidoConId(**row)
+                        db_partido = Game(**partido.dict())
+                        db.add(db_partido)
+                    except Exception as e:
+                        print(f"Error al cargar partido: {row}. Error: {str(e)}")
+                        continue
+
+        # Confirmar los cambios
+        db.commit()
+        print("Datos iniciales cargados exitosamente.")
+    except Exception as e:
+        print(f"Error al cargar datos iniciales: {str(e)}")
+    finally:
+        db.close()
+
+# Ejecutar la carga de datos al iniciar la aplicación
+cargar_datos_iniciales()
 
 @app.get("/allplayers", response_model=List[JugadorConId])
 async def obtener_todos_los_jugadores(db: Session = Depends(get_db)):
