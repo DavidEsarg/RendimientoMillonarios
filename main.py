@@ -1,11 +1,12 @@
 import csv
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Response
 from typing import List
 from sqlalchemy.orm import Session
 from models import JugadorConId, PartidoConId
 from database import get_db, Base, engine, SessionLocal
 from operations import leer_todos_los_jugadores, eliminar_jugador, leer_todos_los_partidos, eliminar_partido, leer_jugadores_eliminados, leer_partidos_eliminados
 from db_models import Player, Game
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
@@ -16,8 +17,7 @@ Base.metadata.create_all(bind=engine)
 def cargar_datos_iniciales():
     db = SessionLocal()
     try:
-        # Verificar si ya hay datos en las tablas
-        if db.query(Player).count() == 0:  # Si la tabla de jugadores está vacía
+        if db.query(Player).count() == 0:
             with open("players.csv", newline="", encoding="utf-8") as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
@@ -29,7 +29,7 @@ def cargar_datos_iniciales():
                         print(f"Error al cargar jugador: {row}. Error: {str(e)}")
                         continue
 
-        if db.query(Game).count() == 0:  # Si la tabla de partidos está vacía
+        if db.query(Game).count() == 0:
             with open("games.csv", newline="", encoding="utf-8") as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
@@ -41,7 +41,6 @@ def cargar_datos_iniciales():
                         print(f"Error al cargar partido: {row}. Error: {str(e)}")
                         continue
 
-        # Confirmar los cambios
         db.commit()
         print("Datos iniciales cargados exitosamente.")
     except Exception as e:
@@ -51,6 +50,10 @@ def cargar_datos_iniciales():
 
 # Ejecutar la carga de datos al iniciar la aplicación
 cargar_datos_iniciales()
+
+@app.get("/", include_in_schema=False)
+async def root():
+    return RedirectResponse(url="/allplayers")
 
 @app.get("/allplayers", response_model=List[JugadorConId])
 async def obtener_todos_los_jugadores(db: Session = Depends(get_db)):
