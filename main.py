@@ -1,14 +1,22 @@
 import csv
-from fastapi import FastAPI, Depends, HTTPException, Response
+from fastapi import FastAPI, Depends, HTTPException, Request
 from typing import List
 from sqlalchemy.orm import Session
 from models import JugadorConId, PartidoConId
 from database import get_db, Base, engine, SessionLocal
 from operations import leer_todos_los_jugadores, eliminar_jugador, leer_todos_los_partidos, eliminar_partido, leer_jugadores_eliminados, leer_partidos_eliminados
 from db_models import Player, Game
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
+
+# Montar la carpeta 'static' para servir archivos estáticos (CSS)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Configurar Jinja2 para plantillas
+templates = Jinja2Templates(directory="templates")
 
 # Crear las tablas al iniciar
 Base.metadata.create_all(bind=engine)
@@ -51,9 +59,31 @@ def cargar_datos_iniciales():
 # Ejecutar la carga de datos al iniciar la aplicación
 cargar_datos_iniciales()
 
-@app.get("/", include_in_schema=False)
-async def root():
-    return RedirectResponse(url="/allplayers")
+# Servir index.html como página principal
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+# Servir plantilla.html con datos dinámicos
+@app.get("/plantilla", response_class=HTMLResponse)
+async def get_plantilla(request: Request, db: Session = Depends(get_db)):
+    jugadores = leer_todos_los_jugadores(db)
+    if not jugadores:
+        raise HTTPException(status_code=404, detail="No hay jugadores activos")
+    return templates.TemplateResponse("plantilla.html", {"request": request, "jugadores": jugadores})
+
+# Servir partidos.html con datos dinámicos
+@app.get("/partidos", response_class=HTMLResponse)
+async def get_partidos(request: Request, db: Session = Depends(get_db)):
+    partidos = leer_todos_los_partidos(db)
+    if not partidos:
+        raise HTTPException(status_code=404, detail="No hay partidos")
+    return templates.TemplateResponse("partidos.html", {"request": request, "partidos": partidos})
+
+# Servir rendimiento.html
+@app.get("/rendimiento", response_class=HTMLResponse)
+async def get_rendimiento(request: Request):
+    return templates.TemplateResponse("rendimiento.html", {"request": request})
 
 @app.get("/allplayers", response_model=List[JugadorConId])
 async def obtener_todos_los_jugadores(db: Session = Depends(get_db)):
