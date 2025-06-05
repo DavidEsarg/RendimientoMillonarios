@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partidos - Rendimiento Millonarios</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <!-- Navbar con Navegación y Búsqueda -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Rendimiento Millonarios FC</a>
@@ -39,56 +37,218 @@
         </div>
     </nav>
 
-    <!-- Sección de Partidos -->
     <div class="container mt-5">
         <h2 class="mb-4">Partidos</h2>
+        <div class="mb-3 d-flex justify-content-between align-items-center">
+            <input type="text" id="searchInput" class="form-control" placeholder="Buscar partidos por fecha o equipo..." onkeyup="searchMatches()" style="max-width: 400px;">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#matchModal" onclick="openAddModal()">Agregar Partido</button>
+        </div>
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover" id="matchTable">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
                         <th>Fecha</th>
-                        <th>Torneo</th>
-                        <th>Rival</th>
-                        <th>Goles Millonarios</th>
-                        <th>Goles Rival</th>
-                        <th>Jugador Destacado</th>
-                        <th>Goles</th>
-                        <th>Asistencias</th>
-                        <th>Tarjetas Amarillas</th>
-                        <th>Tarjetas Rojas</th>
-                        <th>Posesión (%)</th>
+                        <th>Equipo Local</th>
+                        <th>Equipo Visitante</th>
+                        <th>Resultado</th>
+                        <th>Estadio</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for partido in partidos %}
-                    <tr>
-                        <td>{{ partido.id }}</td>
-                        <td>{{ partido.fecha }}</td>
-                        <td>{{ partido.torneo }}</td>
-                        <td>{{ partido.rival }}</td>
-                        <td>{{ partido.goles_millonarios }}</td>
-                        <td>{{ partido.goles_rival }}</td>
-                        <td>{{ partido.jugador_destacado }}</td>
-                        <td>{{ partido.goles }}</td>
-                        <td>{{ partido.asistencias }}</td>
-                        <td>{{ partido.tarjetas_amarillas }}</td>
-                        <td>{{ partido.tarjetas_rojas }}</td>
-                        <td>{{ partido.posesion }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
+                <tbody id="matchTableBody"></tbody>
             </table>
         </div>
     </div>
 
-    <!-- Footer -->
+    <div class="modal fade" id="matchModal" tabindex="-1" aria-labelledby="matchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="matchModalLabel">Agregar Partido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="matchForm">
+                        <input type="hidden" id="editRowIndex">
+                        <div class="mb-3">
+                            <label for="id" class="form-label">ID</label>
+                            <input type="number" class="form-control" id="id" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fecha" class="form-label">Fecha</label>
+                            <input type="date" class="form-control" id="fecha" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="equipo_local" class="form-label">Equipo Local</label>
+                            <input type="text" class="form-control" id="equipo_local" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="equipo_visitante" class="form-label">Equipo Visitante</label>
+                            <input type="text" class="form-control" id="equipo_visitante" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="resultado" class="form-label">Resultado</label>
+                            <input type="text" class="form-control" id="resultado" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="estadio" class="form-label">Estadio</label>
+                            <input type="text" class="form-control" id="estadio" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="saveMatch()">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="bg-primary text-white text-center py-3 mt-5">
         <p>© 2025 Rendimiento Millonarios FC. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+    <script>
+        let matchesData = [];
+
+        async function loadMatches() {
+            try {
+                const response = await fetch('/matches');
+                if (!response.ok) throw new Error('No se pudo cargar los partidos: ' + response.statusText);
+                const matches = await response.json();
+                matchesData = matches.map(match => ({
+                    id: match[0],
+                    fecha: match[1],
+                    equipo_local: match[2],
+                    equipo_visitante: match[3],
+                    resultado: match[4],
+                    estadio: match[5]
+                }));
+                console.log('Datos cargados:', matchesData);
+                renderMatches(matchesData);
+            } catch (error) {
+                console.error('Error al cargar partidos:', error);
+                matchesData = [];
+                renderMatches([]);
+            }
+        }
+
+        function renderMatches(data) {
+            const tbody = document.getElementById("matchTableBody");
+            tbody.innerHTML = '';
+            if (data.length === 0) {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td colspan="7" class="text-center">No hay partidos registrados</td>`;
+                tbody.appendChild(row);
+            } else {
+                data.forEach(match => {
+                    const row = document.createElement("tr");
+                    row.setAttribute("data-id", match.id);
+                    row.innerHTML = `
+                        <td>${match.id}</td>
+                        <td>${match.fecha}</td>
+                        <td>${match.equipo_local}</td>
+                        <td>${match.equipo_visitante}</td>
+                        <td>${match.resultado}</td>
+                        <td>${match.estadio}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="openEditModal(this)">Editar</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteMatch(this)">Eliminar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        function searchMatches() {
+            const input = document.getElementById("searchInput").value.toLowerCase();
+            const filteredData = matchesData.filter(match =>
+                match.fecha.toLowerCase().includes(input) ||
+                match.equipo_local.toLowerCase().includes(input) ||
+                match.equipo_visitante.toLowerCase().includes(input)
+            );
+            renderMatches(filteredData);
+        }
+
+        function openAddModal() {
+            document.getElementById("matchModalLabel").textContent = "Agregar Partido";
+            document.getElementById("matchForm").reset();
+            document.getElementById("editRowIndex").value = "";
+            document.getElementById("id").value = getNextId();
+        }
+
+        function openEditModal(button) {
+            document.getElementById("matchModalLabel").textContent = "Editar Partido";
+            const row = button.parentElement.parentElement;
+            const cells = row.getElementsByTagName("td");
+
+            document.getElementById("editRowIndex").value = row.rowIndex - 1;
+            document.getElementById("id").value = cells[0].textContent;
+            document.getElementById("fecha").value = cells[1].textContent;
+            document.getElementById("equipo_local").value = cells[2].textContent;
+            document.getElementById("equipo_visitante").value = cells[3].textContent;
+            document.getElementById("resultado").value = cells[4].textContent;
+            document.getElementById("estadio").value = cells[5].textContent;
+
+            const modal = new bootstrap.Modal(document.getElementById("matchModal"));
+            modal.show();
+        }
+
+        async function saveMatch() {
+            const editRowIndex = document.getElementById("editRowIndex").value;
+            const matchData = {
+                id: parseInt(document.getElementById("id").value),
+                fecha: document.getElementById("fecha").value,
+                equipo_local: document.getElementById("equipo_local").value,
+                equipo_visitante: document.getElementById("equipo_visitante").value,
+                resultado: document.getElementById("resultado").value,
+                estadio: document.getElementById("estadio").value
+            };
+
+            if (editRowIndex === "") {
+                try {
+                    const response = await fetch('/save-match', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(matchData)
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        matchesData.push(matchData);
+                        alert(result.message);
+                    } else {
+                        throw new Error(result.detail || 'Error desconocido al guardar');
+                    }
+                } catch (error) {
+                    console.error('Error en la solicitud al guardar partido:', error);
+                    alert('Error al guardar el partido. Detalles en la consola: ' + error.message);
+                }
+            } else {
+                matchesData[parseInt(editRowIndex)] = matchData;
+            }
+
+            renderMatches(matchesData);
+            const modal = bootstrap.Modal.getInstance(document.getElementById("matchModal"));
+            modal.hide();
+            searchMatches();
+        }
+
+        function deleteMatch(button) {
+            if (confirm("¿Estás seguro de eliminar este partido?")) {
+                const rowIndex = button.parentElement.parentElement.rowIndex - 1;
+                matchesData.splice(rowIndex, 1);
+                renderMatches(matchesData);
+                searchMatches();
+            }
+        }
+
+        function getNextId() {
+            return matchesData.length ? Math.max(...matchesData.map(m => m.id)) + 1 : 1;
+        }
+
+        window.onload = loadMatches;
+    </script>
 </body>
 </html>

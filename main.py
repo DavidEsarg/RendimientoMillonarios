@@ -1,128 +1,174 @@
-import csv
-from fastapi import FastAPI, Depends, HTTPException, Request
-from typing import List
-from sqlalchemy.orm import Session
-from models import JugadorConId, PartidoConId
-from database import get_db, Base, engine, SessionLocal
-from operations import leer_todos_los_jugadores, eliminar_jugador, leer_todos_los_partidos, eliminar_partido, leer_jugadores_eliminados, leer_partidos_eliminados
-from db_models import Player, Game
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+import uvicorn
+import sqlite3
+from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
 
-# Montar la carpeta 'static' para servir archivos estáticos (CSS)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Configurar Jinja2 para plantillas
-templates = Jinja2Templates(directory="templates")
+# Modelo para los datos del jugador
+class Player(BaseModel):
+    id: int
+    nombre: str
+    numero: int
+    posicion: str
+    equipo: str
+    altura: float
+    edad: int
+    goles: int
+    asistencias: int
+    partidos: int
+    tarjetas_amarillas: int
+    tarjetas_rojas: int
+    estado: str
+    titular: str
 
-# Crear las tablas al iniciar
-Base.metadata.create_all(bind=engine)
+# Modelo para los datos del partido
+class Match(BaseModel):
+    id: int
+    fecha: str
+    equipo_local: str
+    equipo_visitante: str
+    resultado: str
+    estadio: str
 
-# Cargar datos iniciales de los archivos CSV al iniciar la aplicación
-def cargar_datos_iniciales():
-    db = SessionLocal()
-    try:
-        if db.query(Player).count() == 0:
-            with open("players.csv", newline="", encoding="utf-8") as csvfile:
-                reader = csv.DictReader(csvfile)
-                for row in reader:
-                    try:
-                        jugador = JugadorConId(**row)
-                        db_jugador = Player(**jugador.dict())
-                        db.add(db_jugador)
-                    except Exception as e:
-                        print(f"Error al cargar jugador: {row}. Error: {str(e)}")
-                        continue
+# Inicializar la base de datos SQLite
+def init_db():
+    conn = sqlite3.connect("data.db")
+    c = conn.cursor()
+    # Crear tabla de jugadores si no existe
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS players (
+            id INTEGER PRIMARY KEY,
+            nombre TEXT,
+            numero INTEGER,
+            posicion TEXT,
+            equipo TEXT,
+            altura REAL,
+            edad INTEGER,
+            goles INTEGER,
+            asistencias INTEGER,
+            partidos INTEGER,
+            tarjetas_amarillas INTEGER,
+            tarjetas_rojas INTEGER,
+            estado TEXT,
+            titular TEXT
+        )
+    ''')
+    # Crear tabla de partidos si no existe
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS matches (
+            id INTEGER PRIMARY KEY,
+            fecha TEXT,
+            equipo_local TEXT,
+            equipo_visitante TEXT,
+            resultado TEXT,
+            estadio TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
+    print("Base de datos inicializada exitosamente.")
 
-        if db.query(Game).count() == 0:
-            with open("games.csv", newline="", encoding="utf-8") as csvfile:
-                reader = csv.DictReader(csvfile)
-                for row in reader:
-                    try:
-                        partido = PartidoConId(**row)
-                        db_partido = Game(**partido.dict())
-                        db.add(db_partido)
-                    except Exception as e:
-                        print(f"Error al cargar partido: {row}. Error: {str(e)}")
-                        continue
+# Ejecutar inicialización al inicio
+init_db()
 
-        db.commit()
-        print("Datos iniciales cargados exitosamente.")
-    except Exception as e:
-        print(f"Error al cargar datos iniciales: {str(e)}")
-    finally:
-        db.close()
-
-# Ejecutar la carga de datos al iniciar la aplicación
-cargar_datos_iniciales()
-
-# Servir index.html como página principal
 @app.get("/", response_class=HTMLResponse)
-async def root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+async def read_root():
+    try:
+        with open("templates/index.html", "r", encoding="utf-8") as file:
+            return HTMLResponse(content=file.read())
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="Template index.html not found")
 
-# Servir plantilla.html con datos dinámicos
 @app.get("/plantilla", response_class=HTMLResponse)
-async def get_plantilla(request: Request, db: Session = Depends(get_db)):
-    jugadores = leer_todos_los_jugadores(db)
-    if not jugadores:
-        raise HTTPException(status_code=404, detail="No hay jugadores activos")
-    return templates.TemplateResponse("plantilla.html", {"request": request, "jugadores": jugadores})
+async def plantilla():
+    try:
+        with open("templates/plantilla.html", "r", encoding="utf-8") as file:
+            return HTMLResponse(content=file.read())
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="Template plantilla.html not found")
 
-# Servir partidos.html con datos dinámicos
 @app.get("/partidos", response_class=HTMLResponse)
-async def get_partidos(request: Request, db: Session = Depends(get_db)):
-    partidos = leer_todos_los_partidos(db)
-    if not partidos:
-        raise HTTPException(status_code=404, detail="No hay partidos")
-    return templates.TemplateResponse("partidos.html", {"request": request, "partidos": partidos})
+async def partidos():
+    try:
+        with open("templates/partidos.html", "r", encoding="utf-8") as file:
+            return HTMLResponse(content=file.read())
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="Template partidos.html not found")
 
-# Servir rendimiento.html
 @app.get("/rendimiento", response_class=HTMLResponse)
-async def get_rendimiento(request: Request):
-    return templates.TemplateResponse("rendimiento.html", {"request": request})
+async def rendimiento():
+    try:
+        with open("templates/rendimiento.html", "r", encoding="utf-8") as file:
+            return HTMLResponse(content=file.read())
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="Template rendimiento.html not found")
 
-@app.get("/allplayers", response_model=List[JugadorConId])
-async def obtener_todos_los_jugadores(db: Session = Depends(get_db)):
-    jugadores = leer_todos_los_jugadores(db)
-    if not jugadores:
-        raise HTTPException(status_code=404, detail="No hay jugadores activos")
-    return jugadores
+@app.get("/players", response_class=HTMLResponse)
+async def get_players():
+    try:
+        conn = sqlite3.connect("data.db")
+        c = conn.cursor()
+        c.execute("SELECT * FROM players")
+        players = c.fetchall()
+        conn.close()
+        return players
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al leer jugadores: {str(e)}")
 
-@app.delete("/player/{id_jugador}")
-async def eliminar_jugador_endpoint(id_jugador: int, db: Session = Depends(get_db)):
-    mensaje = eliminar_jugador(id_jugador, db)
-    if not mensaje:
-        raise HTTPException(status_code=404, detail="Jugador no encontrado")
-    return {"message": "Jugador eliminado"}
+@app.post("/save-player")
+async def save_player(player: Player):
+    try:
+        conn = sqlite3.connect("data.db")
+        c = conn.cursor()
+        c.execute('''
+            INSERT INTO players (id, nombre, numero, posicion, equipo, altura, edad, goles, asistencias, partidos, tarjetas_amarillas, tarjetas_rojas, estado, titular)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            player.id, player.nombre, player.numero, player.posicion, player.equipo,
+            player.altura, player.edad, player.goles, player.asistencias, player.partidos,
+            player.tarjetas_amarillas, player.tarjetas_rojas, player.estado, player.titular
+        ))
+        conn.commit()
+        conn.close()
+        return {"message": "Jugador guardado exitosamente"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al guardar jugador: {str(e)}")
 
-@app.get("/allgames", response_model=List[PartidoConId])
-async def obtener_todos_los_partidos(db: Session = Depends(get_db)):
-    partidos = leer_todos_los_partidos(db)
-    if not partidos:
-        raise HTTPException(status_code=404, detail="No hay partidos")
-    return partidos
+@app.get("/matches", response_class=HTMLResponse)
+async def get_matches():
+    try:
+        conn = sqlite3.connect("data.db")
+        c = conn.cursor()
+        c.execute("SELECT * FROM matches")
+        matches = c.fetchall()
+        conn.close()
+        return matches
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al leer partidos: {str(e)}")
 
-@app.delete("/game/{id_partido}")
-async def eliminar_partido_endpoint(id_partido: int, db: Session = Depends(get_db)):
-    mensaje = eliminar_partido(id_partido, db)
-    if not mensaje:
-        raise HTTPException(status_code=404, detail="Partido no encontrado")
-    return {"message": "Partido eliminado"}
+@app.post("/save-match")
+async def save_match(match: Match):
+    try:
+        conn = sqlite3.connect("data.db")
+        c = conn.cursor()
+        c.execute('''
+            INSERT INTO matches (id, fecha, equipo_local, equipo_visitante, resultado, estadio)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (
+            match.id, match.fecha, match.equipo_local, match.equipo_visitante,
+            match.resultado, match.estadio
+        ))
+        conn.commit()
+        conn.close()
+        return {"message": "Partido guardado exitosamente"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al guardar partido: {str(e)}")
 
-@app.get("/deletedplayers", response_model=List[JugadorConId])
-async def obtener_jugadores_eliminados(db: Session = Depends(get_db)):
-    jugadores = leer_jugadores_eliminados(db)
-    if not jugadores:
-        raise HTTPException(status_code=404, detail="No hay jugadores eliminados")
-    return jugadores
-
-@app.get("/deletedgames", response_model=List[PartidoConId])
-async def obtener_partidos_eliminados(db: Session = Depends(get_db)):
-    partidos = leer_partidos_eliminados(db)
-    if not partidos:
-        raise HTTPException(status_code=404, detail="No hay partidos eliminados")
-    return partidos
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

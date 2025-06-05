@@ -1,4 +1,4 @@
-id,nombre,numero,posicion,equipo,altura,edad,goles,asistencias,partidos_jugados,tarjetas_amarillas,tarjetas_rojas,estado,eliminado
+id,nombre,numero,posicion,equipo,altura,edad,goles,asistencias,partidos,tarjetas_amarillas,tarjetas_rojas,estado,titular
 1,string,0,string,string,0.0,0,0,0,0,0,0,activo,sí
 2,Andrés Llinás,26,Defensa,Millonarios,1.87,28,2,1,35,5,0,activo,no
 3,Juan Pablo Vargas,6,Defensa,Millonarios,1.92,30,1,0,38,4,0,activo,no
